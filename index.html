@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Adare General Hospital — APTS Portal</title>
+<meta name="description" content="Adare General Hospital Auditable Pharmaceutical Transactions and Services (APTS) Portal — performance analytics, forms, and pharmacy unit directory." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          navy: {
+            950: '#081428',
+            900: '#0B1F3A',
+            800: '#10294B',
+            700: '#163A5F',
+            600: '#1F4D78',
+            500: '#2E6494',
+          },
+          green: {
+            700: '#0A5740',
+            600: '#0F6B4F',
+            500: '#157A5A',
+            100: '#DFF0E8',
+            50:  '#F1F9F5',
+          },
+          gold: {
+            600: '#A8761E',
+            500: '#C7902A',
+            100: '#F5E9D2',
+          },
+          slate: {
+            50: '#F7F9FA',
+            100: '#EEF2F4',
+            200: '#E4EAEC',
+          }
+        },
+        fontFamily: {
+          serif: ['"Source Serif 4"', 'Georgia', 'serif'],
+          sans: ['Inter', 'system-ui', 'sans-serif'],
+          mono: ['"IBM Plex Mono"', 'monospace'],
+        },
+      }
+    }
+  }
+</script>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', system-ui, sans-serif; background:#F7F9FA; color:#0B1F3A; }
+
+  .font-serif { font-family: 'Source Serif 4', Georgia, serif; }
+  .font-mono { font-family: 'IBM Plex Mono', monospace; }
+
+  /* Ledger seam — signature motif: a tick-marked vertical rule referencing the audit/register trail */
+  .ledger-seam {
+    position: relative;
+  }
+  .ledger-seam::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.15em;
+    bottom: 0.15em;
+    width: 3px;
+    background: linear-gradient(180deg, #C7902A 0%, #0F6B4F 100%);
+    border-radius: 1px;
+  }
+
+  .file-code {
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.06em;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #A8761E;
+  }
+
+  .skip-link:focus {
+    position: fixed; top: 1rem; left: 1rem; z-index: 100;
+    background: #0B1F3A; color: #fff; padding: 0.6rem 1rem; border-radius: 0.25rem;
+  }
+  .skip-link { position: absolute; left: -9999px; }
+
+  a, button { transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease; }
+
+  *:focus-visible {
+    outline: 2.5px solid #C7902A;
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  .ticks {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      #1F4D78 0,
+      #1F4D78 1px,
+      transparent 1px,
+      transparent 14px
+    );
+    width: 1px;
+  }
+
+  .grain {
+    background-image: radial-gradient(circle at 1px 1px, rgba(11,31,58,0.035) 1px, transparent 0);
+    background-size: 16px 16px;
+  }
+
+  .card-hover:hover { transform: translateY(-3px); }
+
+  .metric-divider {
+    border-top: 1px solid #E4EAEC;
+  }
+
+  @media (min-width: 1024px) {
+    .metric-divider-vert { border-left: 1px solid #E4EAEC; }
+  }
+</style>
+</head>
+
+<body class="antialiased">
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- ============ HEADER / NAV ============ -->
+<header class="sticky top-0 z-50 bg-navy-900 border-b border-navy-700/60">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8">
+    <div class="flex items-center justify-between h-[72px]">
+
+      <!-- Logo / Institutional title -->
+      <a href="#main-content" class="flex items-center gap-3 group focus-visible:outline-none">
+        <span class="flex items-center justify-center w-11 h-11 rounded-sm bg-green-600 border border-green-500/40 shrink-0" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L3 6V11C3 16.5 6.8 20.7 12 22C17.2 20.7 21 16.5 21 11V6L12 2Z" stroke="white" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M12 7V14" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M8.5 10.5H15.5" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="flex flex-col leading-tight">
+          <span class="font-serif text-white text-[16px] sm:text-[17px] font-semibold tracking-tight">Adare General Hospital</span>
+          <span class="file-code text-gold-500/90">APTS PORTAL · HAWASSA, SIDAMA</span>
+        </span>
+      </a>
+
+      <!-- Desktop nav -->
+      <nav aria-label="Primary" class="hidden lg:flex items-center gap-1">
+        <a href="#framework" class="px-4 py-2 text-sm font-medium text-slate-200 hover:text-white hover:bg-navy-800 rounded-sm">APTS Framework</a>
+        <a href="#units" class="px-4 py-2 text-sm font-medium text-slate-200 hover:text-white hover:bg-navy-800 rounded-sm">Pharmacy Units</a>
+        <a href="#tools" class="px-4 py-2 text-sm font-medium text-slate-200 hover:text-white hover:bg-navy-800 rounded-sm">Tools &amp; Analysis</a>
+        <a href="#reports" class="px-4 py-2 text-sm font-medium text-slate-200 hover:text-white hover:bg-navy-800 rounded-sm">Internal Reports</a>
+        <a href="#access" class="ml-3 px-4 py-2 text-sm font-semibold bg-green-600 hover:bg-green-500 text-white rounded-sm">
+          Staff Login
+        </a>
+      </nav>
+
+      <!-- Mobile menu button -->
+      <button id="menuBtn" aria-expanded="false" aria-controls="mobileNav" class="lg:hidden flex items-center justify-center w-10 h-10 text-slate-100 rounded-sm hover:bg-navy-800" aria-label="Open navigation menu">
+        <svg id="menuIconOpen" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 6H21M3 12H21M3 18H21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg id="menuIconClose" class="hidden" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L18 18M6 18L18 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <!-- Mobile nav panel -->
+    <nav id="mobileNav" aria-label="Mobile primary" class="hidden lg:hidden pb-4 border-t border-navy-700/60 pt-3">
+      <a href="#framework" class="block px-3 py-2.5 text-sm font-medium text-slate-200 hover:bg-navy-800 rounded-sm">APTS Framework</a>
+      <a href="#units" class="block px-3 py-2.5 text-sm font-medium text-slate-200 hover:bg-navy-800 rounded-sm">Pharmacy Units</a>
+      <a href="#tools" class="block px-3 py-2.5 text-sm font-medium text-slate-200 hover:bg-navy-800 rounded-sm">Tools &amp; Analysis</a>
+      <a href="#reports" class="block px-3 py-2.5 text-sm font-medium text-slate-200 hover:bg-navy-800 rounded-sm">Internal Reports</a>
+      <a href="#access" class="block mt-2 px-3 py-2.5 text-sm font-semibold bg-green-600 text-white rounded-sm text-center">Staff Login</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main-content">
+
+  <!-- ============ HERO ============ -->
+  <section class="relative bg-navy-900 overflow-hidden">
+    <div class="absolute inset-0 grain opacity-40" aria-hidden="true"></div>
+    <div class="absolute right-0 top-0 h-full w-px bg-navy-700/0 hidden lg:block" aria-hidden="true"></div>
+
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 pt-16 pb-20 lg:pt-24 lg:pb-28 relative">
+      <div class="max-w-3xl ledger-seam pl-6 sm:pl-8">
+        <p class="file-code mb-4 text-gold-500">REF: AGH/PHM/APTS-2018 E.C. · MINISTRY OF HEALTH FRAMEWORK</p>
+        <h1 class="font-serif text-white text-[2rem] sm:text-[2.6rem] lg:text-[3.1rem] leading-[1.12] font-semibold tracking-tight">
+          Adare General Hospital APTS System —<br class="hidden sm:block">
+          <span class="text-green-500">Transparency, Accountability,</span> and Reliable Data.
+        </h1>
+        <p class="mt-6 text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">
+          The Auditable Pharmaceutical Transactions and Services framework governs how Adare General Hospital
+          dispenses, accounts for, and reports on every birr of pharmaceutical expenditure — optimizing the
+          medicine budget against verifiable consumption data while shortening waiting time and raising
+          patient satisfaction at the dispensing window.
+        </p>
+
+        <div class="mt-9 flex flex-wrap gap-3.5">
+          <a href="#tools" class="inline-flex items-center gap-2 px-6 py-3.5 bg-green-600 hover:bg-green-500 text-white text-sm font-semibold rounded-sm shadow-sm">
+            View Performance Analytics
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#reports" class="inline-flex items-center gap-2 px-6 py-3.5 bg-transparent border border-slate-500/50 hover:border-gold-500 hover:text-gold-500 text-slate-100 text-sm font-semibold rounded-sm">
+            Access Forms &amp; Vouchers
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CORE PERFORMANCE METRICS ============ -->
+  <section aria-labelledby="metrics-heading" class="bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 py-12 lg:py-14">
+      <div class="flex items-baseline justify-between flex-wrap gap-2 mb-8">
+        <h2 id="metrics-heading" class="file-code text-navy-600">CORE PERFORMANCE INDICATORS — CURRENT QUARTER</h2>
+        <span class="text-xs text-navy-500/70 font-mono">Updated weekly by the Pharmacy Audit Unit</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+        <!-- Metric 1 -->
+        <div class="py-6 px-1 lg:px-7 metric-divider lg:metric-divider-vert lg:border-t-0 first:lg:border-l-0">
+          <p class="text-sm font-medium text-navy-700/80 mb-2">Patient Satisfaction Rate</p>
+          <p class="font-serif text-4xl text-navy-900 font-semibold">90<span class="text-2xl">%+</span></p>
+          <p class="mt-2 text-xs text-green-600 font-semibold uppercase tracking-wide">Target threshold</p>
+        </div>
+        <!-- Metric 2 -->
+        <div class="py-6 px-1 lg:px-7 metric-divider lg:metric-divider-vert">
+          <p class="text-sm font-medium text-navy-700/80 mb-2">Essential Medicines Availability</p>
+          <p class="font-serif text-4xl text-navy-900 font-semibold">95<span class="text-2xl">%</span></p>
+          <p class="mt-2 text-xs text-green-600 font-semibold uppercase tracking-wide">Tracer-list target</p>
+        </div>
+        <!-- Metric 3 -->
+        <div class="py-6 px-1 lg:px-7 metric-divider lg:metric-divider-vert">
+          <p class="text-sm font-medium text-navy-700/80 mb-2">Inventory Accuracy</p>
+          <p class="font-serif text-4xl text-navy-900 font-semibold">100<span class="text-2xl">%</span></p>
+          <p class="mt-2 text-xs text-gold-600 font-semibold uppercase tracking-wide">Fully auditable</p>
+        </div>
+        <!-- Metric 4 -->
+        <div class="py-6 px-1 lg:px-7 metric-divider lg:metric-divider-vert">
+          <p class="text-sm font-medium text-navy-700/80 mb-2">Wastage &amp; Expiry Reduction</p>
+          <p class="font-serif text-4xl text-navy-900 font-semibold">Sub&#8209;critical</p>
+          <p class="mt-2 text-xs text-green-600 font-semibold uppercase tracking-wide">Below loss ceiling</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FIVE APTS RESULT AREAS ============ -->
+  <section id="framework" aria-labelledby="framework-heading" class="bg-slate-50 py-16 lg:py-24 scroll-mt-20">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8">
+      <div class="max-w-2xl mb-12">
+        <p class="file-code text-gold-600 mb-3">APTS-01 THROUGH APTS-05</p>
+        <h2 id="framework-heading" class="font-serif text-3xl lg:text-4xl text-navy-900 font-semibold tracking-tight">
+          The Five APTS Result Areas
+        </h2>
+        <p class="mt-4 text-navy-700/80 leading-relaxed">
+          Every dispensing, procurement, and inventory decision at Adare General Hospital is mapped to one of
+          five result areas defined under the national APTS implementation guideline. Together they form the
+          chain of custody between budget allocation and the medicine handed to a patient.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Card 1 -->
+        <article class="bg-white border border-slate-200 rounded-sm p-7 card-hover">
+          <span class="file-code text-gold-600">APTS-01</span>
+          <h3 class="font-serif text-xl text-navy-900 font-semibold mt-3 mb-2.5">Financial &amp; Transactional Transparency</h3>
+          <p class="text-sm text-navy-700/85 leading-relaxed">
+            Standardized vouchers govern every cash, credit, and free-service transaction. Daily sales are
+            reconciled against the cashier's register before close of business, producing an auditable trail
+            from prescription to payment.
+          </p>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="bg-white border border-slate-200 rounded-sm p-7 card-hover">
+          <span class="file-code text-gold-600">APTS-02</span>
+          <h3 class="font-serif text-xl text-navy-900 font-semibold mt-3 mb-2.5">Scientific Budget Utilization</h3>
+          <p class="text-sm text-navy-700/85 leading-relaxed">
+            Consumption data is reconciled through ABC/VEN cross-analysis, ensuring vital, high-cost, and
+            high-volume medicines are prioritized in the procurement plan ahead of lower-priority items.
+          </p>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="bg-white border border-slate-200 rounded-sm p-7 card-hover">
+          <span class="file-code text-gold-600">APTS-03</span>
+          <h3 class="font-serif text-xl text-navy-900 font-semibold mt-3 mb-2.5">Workforce Deployment</h3>
+          <p class="text-sm text-navy-700/85 leading-relaxed">
+            Staffing is allocated against measured workload-to-staff ratios at each dispensing point,
+            eliminating queue bottlenecks during peak OPD and inpatient discharge hours.
+          </p>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="bg-white border border-slate-200 rounded-sm p-7 card-hover">
+          <span class="file-code text-gold-600">APTS-04</span>
+          <h3 class="font-serif text-xl text-navy-900 font-semibold mt-3 mb-2.5">Inventory Management</h3>
+          <p class="text-sm text-navy-700/85 leading-relaxed">
+            Systematic physical inventory counts, bin-card reconciliation, and stock-status classification
+            (overstock, understock, expiring) keep shelf reality aligned with recorded balances.
+          </p>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="bg-white border border-slate-200 rounded-sm p-7 card-hover">
+          <span class="file-code text-gold-600">APTS-05</span>
+          <h3 class="font-serif text-xl text-navy-900 font-semibold mt-3 mb-2.5">Quality Patient Care</h3>
+          <p class="text-sm text-navy-700/85 leading-relaxed">
+            Counseling-time metrics, labeling accuracy, and last-mile delivery to inpatient wards are
+            tracked together to ensure clinical instructions reach the patient intact and on time.
+          </p>
+        </article>
+
+        <!-- Card 6: policy blockquote, fills the 6th grid slot on lg -->
+        <div class="bg-navy-900 rounded-sm p-7 flex flex-col justify-center">
+          <blockquote class="border-l-2 border-gold-500 pl-4">
+            <p class="font-serif text-white text-base leading-relaxed italic">
+              "Every medicine dispensed at public expense must be traceable, in full, from procurement
+              order to patient record."
+            </p>
+            <footer class="mt-3 text-xs font-mono text-slate-400 not-italic">— Daniel Mengistu, Ph.D., AGH Pharmacy &amp; Finance Policy Statement</footer>
+          </blockquote>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TOOLS & ANALYSIS ============ -->
+  <section id="tools" aria-labelledby="tools-heading" class="bg-white py-16 lg:py-24 scroll-mt-20 border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-14">
+
+        <div class="lg:col-span-4">
+          <p class="file-code text-gold-600 mb-3">SECTION 04</p>
+          <h2 id="tools-heading" class="font-serif text-3xl text-navy-900 font-semibold tracking-tight">
+            Tools &amp; Analysis
+          </h2>
+          <p class="mt-4 text-navy-700/80 leading-relaxed text-sm">
+            Working instruments used by pharmacy and finance staff to convert daily transaction data into
+            decisions about procurement, staffing, and loss prevention.
+          </p>
+          <a href="#" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-green-600 hover:text-green-700">
+            Open the analysis workspace
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+
+        <div class="lg:col-span-8 grid sm:grid-cols-2 gap-5">
+
+          <div class="border border-slate-200 rounded-sm p-6">
+            <h3 class="font-semibold text-navy-900 text-sm mb-2">ABC/VEN Reconciliation Worksheet</h3>
+            <p class="text-sm text-navy-700/75 leading-relaxed">Cross-tabulates annual consumption value against vitality classification to flag misallocated spend.</p>
+          </div>
+
+          <div class="border border-slate-200 rounded-sm p-6">
+            <h3 class="font-semibold text-navy-900 text-sm mb-2">Stock Status Calculator</h3>
+            <p class="text-sm text-navy-700/75 leading-relaxed">Classifies each item as overstocked, adequately stocked, understocked, or stocked-out against monthly consumption average.</p>
+          </div>
+
+          <div class="border border-slate-200 rounded-sm p-6">
+            <h3 class="font-semibold text-navy-900 text-sm mb-2">Daily Sales &amp; Cash Reconciliation Sheet</h3>
+            <p class="text-sm text-navy-700/75 leading-relaxed">Matches dispensed-item value against register cash, credit notes, and free-service vouchers at end of shift.</p>
+          </div>
+
+          <div class="border border-slate-200 rounded-sm p-6">
+            <h3 class="font-semibold text-navy-900 text-sm mb-2">Wastage &amp; Expiry Tracker</h3>
+            <p class="text-sm text-navy-700/75 leading-relaxed">Logs near-expiry batches by FEFO order and calculates loss value against the quarterly wastage ceiling.</p>
+          </div>
+
+          <div class="border border-slate-200 rounded-sm p-6">
+            <h3 class="font-semibold text-navy-900 text-sm mb-2">Workload-to-Staff Ratio Sheet</h3>
+            <p class="text-sm text-navy-700/75 leading-relaxed">Measures prescriptions-per-dispenser-hour by unit to support staffing redeployment decisions.</p>
+          </div>
+
+          <div class="border border-slate-200 rounded-sm p-6">
+            <h3 class="font-semibold text-navy-900 text-sm mb-2">Bin Card &amp; Physical Count Log</h3>
+            <p class="text-sm text-navy-700/75 leading-relaxed">Standard template for periodic physical inventory counts and variance notation against bin card balances.</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ OPERATIONAL UNITS DIRECTORY ============ -->
+  <section id="units" aria-labelledby="units-heading" class="bg-slate-50 py-16 lg:py-24 scroll-mt-20 border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8">
+      <div class="max-w-2xl mb-12">
+        <p class="file-code text-gold-600 mb-3">SECTION 05</p>
+        <h2 id="units-heading" class="font-serif text-3xl lg:text-4xl text-navy-900 font-semibold tracking-tight">
+          Operational Units Directory
+        </h2>
+        <p class="mt-4 text-navy-700/80 leading-relaxed">
+          Each pharmacy unit at Adare General Hospital operates under the same APTS register and voucher
+          standard, adapted to the clinical tempo and patient flow specific to that point of care.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+        <article class="bg-white border border-slate-200 rounded-sm p-6 card-hover">
+          <div class="w-10 h-10 rounded-sm bg-navy-900 flex items-center justify-center mb-4" aria-hidden="true">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5V19M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <h3 class="font-semibold text-navy-900 text-base mb-2">Emergency Pharmacy</h3>
+          <p class="text-sm text-navy-700/75 leading-relaxed">24-hour dispensing point serving the emergency department, operating on expedited voucher clearance for acute cases.</p>
+        </article>
+
+        <article class="bg-white border border-slate-200 rounded-sm p-6 card-hover">
+          <div class="w-10 h-10 rounded-sm bg-navy-900 flex items-center justify-center mb-4" aria-hidden="true">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="7" r="3.2" stroke="white" stroke-width="1.8"/><path d="M5 20C5 16.5 8 14.5 12 14.5C16 14.5 19 16.5 19 20" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </div>
+          <h3 class="font-semibold text-navy-900 text-base mb-2">Outpatient (OPD) Dispensary</h3>
+          <p class="text-sm text-navy-700/75 leading-relaxed">Highest-volume unit by prescription count; primary site for workload-to-staff ratio monitoring and counseling-time tracking.</p>
+        </article>
+
+        <article class="bg-white border border-slate-200 rounded-sm p-6 card-hover">
+          <div class="w-10 h-10 rounded-sm bg-navy-900 flex items-center justify-center mb-4" aria-hidden="true">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="16" height="16" rx="1" stroke="white" stroke-width="1.8"/><path d="M8 9H16M8 13H16M8 17H13" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+          <h3 class="font-semibold text-navy-900 text-base mb-2">Inpatient Store</h3>
+          <p class="text-sm text-navy-700/75 leading-relaxed">Ward-level stock holding and unit-dose distribution; reconciled against bin cards during weekly physical counts.</p>
+        </article>
+
+        <article class="bg-white border border-slate-200 rounded-sm p-6 card-hover">
+          <div class="w-10 h-10 rounded-sm bg-navy-900 flex items-center justify-center mb-4" aria-hidden="true">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21C12 21 4 15.5 4 9.5C4 6.5 6.2 4.5 8.8 4.5C10.4 4.5 11.6 5.3 12 6.4C12.4 5.3 13.6 4.5 15.2 4.5C17.8 4.5 20 6.5 20 9.5C20 15.5 12 21 12 21Z" stroke="white" stroke-width="1.7" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 class="font-semibold text-navy-900 text-base mb-2">Chronic / ART Care Pharmacy</h3>
+          <p class="text-sm text-navy-700/75 leading-relaxed">Dedicated refill scheduling for chronic-disease and antiretroviral therapy patients, with adherence and stock-out alerting.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INTERNAL REPORTS ============ -->
+  <section id="reports" aria-labelledby="reports-heading" class="bg-navy-900 py-16 lg:py-20 scroll-mt-20">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
+        <div class="max-w-xl">
+          <p class="file-code text-gold-500 mb-3">SECTION 06 · RESTRICTED TO AUTHORIZED STAFF</p>
+          <h2 id="reports-heading" class="font-serif text-3xl text-white font-semibold tracking-tight">
+            Internal Reports
+          </h2>
+          <p class="mt-3 text-slate-300 text-sm leading-relaxed">
+            Monthly and quarterly submissions compiled by the Pharmacy Audit Unit for the Finance Department
+            and the Regional Health Bureau.
+          </p>
+        </div>
+        <a href="#access" class="shrink-0 inline-flex items-center gap-2 px-5 py-3 border border-slate-500/50 hover:border-gold-500 hover:text-gold-500 text-slate-100 text-sm font-semibold rounded-sm">
+          Sign in to view archive
+        </a>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-px bg-navy-700/60 border border-navy-700/60">
+        <div class="bg-navy-900 p-6">
+          <span class="file-code text-gold-500">RPT-M</span>
+          <h3 class="text-white font-semibold mt-2 mb-1.5 text-sm">Monthly Consumption &amp; Reconciliation Report</h3>
+          <p class="text-slate-400 text-xs leading-relaxed">ABC/VEN summary, sales reconciliation, and variance notes by unit.</p>
+        </div>
+        <div class="bg-navy-900 p-6">
+          <span class="file-code text-gold-500">RPT-Q</span>
+          <h3 class="text-white font-semibold mt-2 mb-1.5 text-sm">Quarterly Wastage &amp; Expiry Statement</h3>
+          <p class="text-slate-400 text-xs leading-relaxed">Loss value against the wastage ceiling, with corrective-action log.</p>
+        </div>
+        <div class="bg-navy-900 p-6">
+          <span class="file-code text-gold-500">RPT-A</span>
+          <h3 class="text-white font-semibold mt-2 mb-1.5 text-sm">Annual Inventory Audit Summary</h3>
+          <p class="text-slate-400 text-xs leading-relaxed">Full physical count reconciliation submitted to the Regional Health Bureau.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ACCESS / SECONDARY CTA ============ -->
+  <section id="access" aria-labelledby="access-heading" class="bg-green-50 py-14 border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+      <div>
+        <h2 id="access-heading" class="font-serif text-xl text-navy-900 font-semibold">Authorized staff access</h2>
+        <p class="text-sm text-navy-700/80 mt-1">Pharmacy, finance, and audit staff sign in with their AGH institutional credentials.</p>
+      </div>
+      <a href="#" class="inline-flex items-center gap-2 px-6 py-3 bg-navy-900 hover:bg-navy-800 text-white text-sm font-semibold rounded-sm shrink-0">
+        Staff Sign-In Portal
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="bg-navy-950 text-slate-300">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 py-14">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+
+      <div>
+        <div class="flex items-center gap-2.5 mb-4">
+          <span class="flex items-center justify-center w-9 h-9 rounded-sm bg-green-600" aria-hidden="true">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L3 6V11C3 16.5 6.8 20.7 12 22C17.2 20.7 21 16.5 21 11V6L12 2Z" stroke="white" stroke-width="1.6" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="font-serif text-white font-semibold">Adare General Hospital</span>
+        </div>
+        <p class="text-sm text-slate-400 leading-relaxed">
+          Auditable Pharmaceutical Transactions and Services Portal, operated jointly by the Pharmacy
+          Department and the Finance Department.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="file-code text-slate-400 mb-4">PHARMACY DEPARTMENT</h3>
+        <ul class="space-y-2 text-sm text-slate-400">
+          <li>Adare General Hospital Compound</li>
+          <li>Hawassa, Sidama Region, Ethiopia</li>
+          <li>Tel: +251 46 XXX XXXX</li>
+          <li>pharmacy.dept@adaregh.gov.et</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="file-code text-slate-400 mb-4">FINANCE DEPARTMENT</h3>
+        <ul class="space-y-2 text-sm text-slate-400">
+          <li>Finance &amp; Revenue Office, Block C</li>
+          <li>Hawassa, Sidama Region, Ethiopia</li>
+          <li>Tel: +251 46 XXX XXXX</li>
+          <li>finance.dept@adaregh.gov.et</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="file-code text-slate-400 mb-4">QUICK LINKS</h3>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#framework" class="hover:text-gold-500">APTS Framework</a></li>
+          <li><a href="#units" class="hover:text-gold-500">Pharmacy Units</a></li>
+          <li><a href="#tools" class="hover:text-gold-500">Tools &amp; Analysis</a></li>
+          <li><a href="#reports" class="hover:text-gold-500">Internal Reports</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="mt-12 pt-6 border-t border-navy-800 flex flex-col sm:flex-row justify-between gap-3 text-xs text-slate-500">
+      <p>&copy; 2026 Adare General Hospital. Operated under the Ministry of Health APTS implementation guideline.</p>
+      <p class="font-mono">Document Ref: AGH/PHM/APTS-PORTAL/v1</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  const iconOpen = document.getElementById('menuIconOpen');
+  const iconClose = document.getElementById('menuIconClose');
+
+  menuBtn.addEventListener('click', () => {
+    const isOpen = mobileNav.classList.contains('hidden') === false;
+    mobileNav.classList.toggle('hidden');
+    iconOpen.classList.toggle('hidden');
+    iconClose.classList.toggle('hidden');
+    menuBtn.setAttribute('aria-expanded', String(!isOpen));
+  });
+
+  // Close mobile nav after selecting a link
+  mobileNav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileNav.classList.add('hidden');
+      iconOpen.classList.remove('hidden');
+      iconClose.classList.add('hidden');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+
+</body>
+</html>
